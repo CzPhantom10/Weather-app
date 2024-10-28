@@ -9,7 +9,7 @@ A web application built using Streamlit that provides current weather updates an
 - **Graphical Representation**: Visualizes the weekly temperature forecast in a line graph.
 
 ## Demo 🎬
-![Demo Screenshot](Weather-app-ss.pdf)
+![Demo Screenshot](C:\Users\Prateek\app\Weather-app-ss.pdf)
 
 ## Installation 🚀
 
