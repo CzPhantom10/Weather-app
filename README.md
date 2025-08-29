@@ -1,10 +1,10 @@
 
-# SkyCast / WeatherNow 🌦️
+# SkyCast 
 
 A modern weather web app built with Flask (backend API) and a beautiful HTML/CSS/JS frontend. Get real-time weather, a 5-day forecast, and temperature trends for any city, with a stylish landing page and dynamic weather icons.
 
 
-## Features 📋
+## Features 
 - **Landing Page**: Modern, responsive landing page with app branding and feature highlights.
 - **Current Weather**: See temperature, humidity, pressure, wind speed, and weather icon for your city.
 - **5-Day Forecast**: View a daily forecast with icons and temperatures.
@@ -12,13 +12,7 @@ A modern weather web app built with Flask (backend API) and a beautiful HTML/CSS
 - **Dynamic Weather Icons**: Icons change based on weather conditions.
 - **Responsive UI**: Works great on desktop and mobile.
 
-
-## Demo 🎬
-![Landing Page Screenshot](static/img/landing-demo.png)
-![Weather Dashboard Screenshot](static/img/dashboard-demo.png)
-
-
-## Installation 🚀
+## Installation 
 
 1. **Clone the repository**:
     ```bash
@@ -39,7 +33,7 @@ A modern weather web app built with Flask (backend API) and a beautiful HTML/CSS
       ```
 
 
-## Usage 🖥️
+## Usage 
 
 1. Start the Flask app:
     ```bash
@@ -58,11 +52,11 @@ A modern weather web app built with Flask (backend API) and a beautiful HTML/CSS
 - **OpenWeatherMap API**: For real-time weather and forecast data
 
 
-## License 📝
+## License 
 This project is licensed under the MIT License.
 
-## Acknowledgements 🙌
+## Acknowledgements 
 - **OpenWeatherMap API** for providing weather data
 - **ApexCharts** for charting
 
-Feel free to contribute and open issues if you have suggestions or find any bugs. Enjoy forecasting! 🌤️
+Feel free to contribute and open issues if you have suggestions or find any bugs. Enjoy forecasting! 
