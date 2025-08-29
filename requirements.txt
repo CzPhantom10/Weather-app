@@ -2,3 +2,6 @@ streamlit
 requests
 g4f[all]
 matplotlib
+Flask
+python-dotenv
+requests

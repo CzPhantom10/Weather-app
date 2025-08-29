@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+  <div class="container">
+    <form method="get" class="header">
+      <div class="city-date">
+        <span class="city">{{ city }}</span>
+        <span class="date">{{ weather.date }}</span>
+      </div>
+      <input type="text" name="city" placeholder="Search city..." value="{{ city }}" style="border-radius: 16px; padding: 8px 16px; border: 1px solid #eee; font-size: 1rem;">
+      <button type="submit" style="border-radius: 16px; padding: 8px 16px; background: #b7eaff; border: none; font-weight: 600; cursor: pointer;">Search</button>
+    </form>
+    {% if error %}
+      <div style="background:#ffe0e0;color:#b00;padding:18px 16px;border-radius:16px;margin-bottom:24px;text-align:center;font-size:1.1em;">
+        {{ error }}
+      </div>
+    {% endif %}
+    <div class="current-weather">
+      <img class="weather-icon" src="{{ url_for('static', filename='icons/' + weather.icon) }}" alt="Weather icon">
+      <div class="weather-info">
+        <div class="temp">{{ weather.temp }}°C</div>
+        <div class="desc">{{ weather.desc }}</div>
+        <div class="stats">
+          <div class="stat">💧 {{ weather.humidity }}% Humidity</div>
+          <div class="stat">🔽 {{ weather.pressure }} hPa</div>
+          <div class="stat">💨 {{ weather.wind }} m/s</div>
+          <div class="stat">☀️ UV {{ weather.uv }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="weekly-forecast">
+      {% for day in forecast %}
+      <div class="forecast-card">
+        <span class="forecast-date">{{ day.date }}</span>
+        <img class="forecast-icon" src="{{ url_for('static', filename='icons/' + day.icon) }}" alt="icon">
+        <span class="forecast-temp">{{ day.temp }}°</span>
+        <span style="font-size:0.9em;color:#888;">{{ day.desc }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="trend-card">
+      <div id="chart" style="height: 350px;"></div>
+    </div>
+  </div>
+  <script id="trend-data" type="application/json">
+    {
+      "labels": {{ trend.labels|tojson }},
+      "highs": {{ trend.highs|tojson }},
+      "lows": {{ trend.lows|tojson }}
+    }
+  </script>
+  <script>
+    const trendRaw = document.getElementById('trend-data').textContent;
+    const trend = JSON.parse(trendRaw);
+    var options = {
+      series: [
+        {
+          name: "High",
+          data: trend.highs
+        },
+        {
+          name: "Low",
+          data: trend.lows
+        }
+      ],
+      chart: {
+        height: 350,
+        type: 'line',
+        dropShadow: {
+          enabled: true,
+          color: '#000',
+          top: 18,
+          left: 7,
+          blur: 10,
+          opacity: 0.5
+        },
+        zoom: { enabled: false },
+        toolbar: { show: false }
+      },
+      colors: ['#77B6EA', '#545454'],
+      dataLabels: { enabled: true },
+      stroke: { curve: 'smooth' },
+      title: {
+        text: 'Average High & Low Temperature',
+        align: 'left'
+      },
+      grid: {
+        borderColor: '#e7e7e7',
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5
+        },
+      },
+      markers: { size: 1 },
+      xaxis: {
+        categories: trend.labels,
+        title: { text: 'Date' }
+      },
+      yaxis: {
+        title: { text: 'Temperature' },
+        min: Math.min(...trend.lows, ...trend.highs, 0) - 2,
+        max: Math.max(...trend.lows, ...trend.highs, 0) + 2
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        floating: true,
+        offsetY: -25,
+        offsetX: -5
+      }
+    };
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+  </script>

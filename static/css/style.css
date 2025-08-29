@@ -1,0 +1,211 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f6f8fb;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(60,60,100,0.08);
+  padding: 32px 24px 24px 24px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.city-date {
+  display: flex;
+  flex-direction: column;
+}
+.city {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.date {
+  color: #888;
+  font-size: 1rem;
+}
+.current-weather {
+  background: linear-gradient(90deg, #b7eaff 0%, #e0e7ff 100%);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(60,60,100,0.06);
+}
+.weather-icon {
+  width: 72px;
+  height: 72px;
+  margin-right: 24px;
+}
+.weather-info {
+  flex: 1;
+}
+.temp {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+}
+.desc {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+.stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+}
+.stat {
+  font-size: 0.95rem;
+  color: #444;
+}
+.weekly-forecast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.forecast-card {
+  background: #f7faff;
+  border-radius: 16px;
+  padding: 12px 16px;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(60,60,100,0.04);
+}
+.forecast-date {
+  font-size: 0.95rem;
+  color: #888;
+}
+.forecast-temp {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 4px 0;
+}
+.forecast-icon {
+  width: 32px;
+  height: 32px;
+}
+.trend-card {
+  background: linear-gradient(90deg, #e0f7fa 0%, #ffe0e0 100%);
+  border-radius: 18px;
+  padding: 24px 16px 8px 16px;
+  box-shadow: 0 2px 8px rgba(60,60,100,0.06);
+}
+@media (max-width: 800px) {
+  .container { max-width: 98vw; padding: 12px; }
+  .weekly-forecast { gap: 8px; }
+  .forecast-card { min-width: 90px; padding: 8px 8px; }
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f6f8fb;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #eaf1fb;
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+.header .city {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.header .date {
+  font-size: 1rem;
+  color: #888;
+}
+.current-weather {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #b6d0f7 60%, #eaf1fb 100%);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.current-weather .temp {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-right: 24px;
+}
+.current-weather .desc {
+  font-size: 1.1rem;
+  color: #555;
+}
+.current-weather .icon {
+  width: 64px;
+  height: 64px;
+  margin-left: 24px;
+}
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0 24px 0;
+}
+.stat-card {
+  background: #f6f8fb;
+  border-radius: 12px;
+  padding: 12px 18px;
+  text-align: center;
+  flex: 1;
+  margin: 0 6px;
+  font-size: 0.95rem;
+}
+.weekly-forecast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.day-card {
+  background: #f6f8fb;
+  border-radius: 12px;
+  padding: 10px 14px;
+  flex: 1 1 120px;
+  min-width: 110px;
+  text-align: center;
+  font-size: 0.98rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.day-card .icon {
+  width: 32px;
+  height: 32px;
+  margin: 4px 0;
+}
+.trend-card {
+  background: linear-gradient(90deg, #b6d0f7 0%, #ffe0b2 100%);
+  border-radius: 18px;
+  padding: 24px 18px 12px 18px;
+  margin-bottom: 0;
+}
+@media (max-width: 700px) {
+  .container { max-width: 98vw; padding: 8px; }
+  .header, .current-weather, .trend-card { padding: 12px; }
+  .weekly-forecast { gap: 6px; }
+  .day-card { min-width: 80px; font-size: 0.9rem; }
+}

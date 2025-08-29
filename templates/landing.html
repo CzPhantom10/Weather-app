@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyCast - Accurate Weather Forecasts</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+  <div class="hero-bg">
+    <header class="navbar">
+      <div class="logo">
+        <img src="static/img/logo.png" alt="SkyCast Logo" style="height:48px; width:auto;" />
+      </div>
+    </header>
+    <main class="hero-content">
+      <h1>SkyCast</h1>
+      <p class="subtitle">Sun, rain, or storm — we’ve got you covered</p>
+  <a href="{{ url_for('index') }}" class="get-started">Get Started</a>
+    </main>
+  <img src="{{ url_for('static', filename='img/blue-bg.png') }}" alt="background" class="bg-img">
+  </div>
+  <section class="features">
+    <h2>Key Features</h2>
+    <div class="features-row">
+      <div class="feature-card">
+        <div class="feature-icon sun">☀️</div>
+        <div class="feature-title">Real-time Updates</div>
+        <div class="feature-desc">Location-based weather delivered instantly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon calendar">📅</div>
+        <div class="feature-title">5-Day Forecast</div>
+        <div class="feature-desc">See the week ahead and plan accordingly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon graph">📈</div>
+        <div class="feature-title">Temperature Graphs</div>
+        <div class="feature-desc">Visualize temperature changes and trends.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon alert">📍</div>
+        <div class="feature-title">Location-based Alerts</div>
+        <div class="feature-desc">Get notified about severe weather conditions.</div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
