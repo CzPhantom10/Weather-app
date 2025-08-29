@@ -1,22 +1,29 @@
-# Weather Prediction Model using LLM 🌦️
 
-A web application built using Streamlit that provides current weather updates and a weekly weather forecast for any city. This app leverages the OpenWeatherMap API for real-time data and utilizes an LLM model to generate easy-to-understand descriptions of the weather. The weekly forecast includes a graphical representation of daily minimum and maximum temperatures.
+# SkyCast / WeatherNow 🌦️
+
+A modern weather web app built with Flask (backend API) and a beautiful HTML/CSS/JS frontend. Get real-time weather, a 5-day forecast, and temperature trends for any city, with a stylish landing page and dynamic weather icons.
+
 
 ## Features 📋
-- **Current Weather Data**: Displays current temperature, humidity, pressure, and wind speed for the specified city.
-- **Weather Description**: Uses an LLM model to generate a user-friendly description of the current weather.
-- **Weekly Forecast**: Provides a detailed daily forecast for the next week, including min and max temperatures.
-- **Graphical Representation**: Visualizes the weekly temperature forecast in a line graph.
+- **Landing Page**: Modern, responsive landing page with app branding and feature highlights.
+- **Current Weather**: See temperature, humidity, pressure, wind speed, and weather icon for your city.
+- **5-Day Forecast**: View a daily forecast with icons and temperatures.
+- **Temperature Trend Chart**: Interactive line chart (ApexCharts) for high/low temps.
+- **Dynamic Weather Icons**: Icons change based on weather conditions.
+- **Responsive UI**: Works great on desktop and mobile.
+
 
 ## Demo 🎬
-![Demo Screenshot](C:\Users\Prateek\app\Weather-app-ss.pdf)
+![Landing Page Screenshot](static/img/landing-demo.png)
+![Weather Dashboard Screenshot](static/img/dashboard-demo.png)
+
 
 ## Installation 🚀
 
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/CzPhantom10/Weather-App.git
-    cd weather-prediction-llm
+    cd Weather-App
     ```
 
 2. **Install the required libraries**:
@@ -24,37 +31,38 @@ A web application built using Streamlit that provides current weather updates an
     pip install -r requirements.txt
     ```
 
-3. **Set up API keys**:
-    Replace the placeholder `weather_api_key` in `main()` function with your OpenWeatherMap API key.
+3. **Set up your API key**:
+    - Get a free API key from [OpenWeatherMap](https://openweathermap.org/appid)
+    - Add it to your `.env` file:
+      ```
+      WEATHER_API_KEY=your_actual_api_key_here
+      ```
+
 
 ## Usage 🖥️
 
-1. Run the Streamlit app:
+1. Start the Flask app:
     ```bash
-    streamlit run app.py
+    python app.py
     ```
 
-2. **Enter a city** in the sidebar and click "Get Weather" to retrieve current weather updates and weekly forecast.
+2. Open your browser and go to [http://localhost:5000](http://localhost:5000)
+    - The landing page is at `/`
+    - The weather dashboard is at `/app`
+
 
 ### Main Components
+- **Flask** backend: Handles API requests and serves HTML templates
+- **HTML/CSS/JS**: Modern, responsive frontend (see `templates/` and `static/`)
+- **ApexCharts**: For interactive temperature trend chart
+- **OpenWeatherMap API**: For real-time weather and forecast data
 
-- **get_weather_data(city, weather_api_key)**: Fetches current weather data from OpenWeatherMap API.
-- **generate_weather_description(data)**: Uses an LLM to generate a description of the current weather.
-- **get_weekly_forecast(weather_api_key, lat, lon)**: Retrieves a 7-day weather forecast based on city coordinates.
-- **display_weekly_forecast(data)**: Displays daily min and max temperatures, along with a graph, for the weekly forecast.
-
-### Dependencies
-
-- **Streamlit** for the web interface
-- **Requests** for handling API calls
-- **Matplotlib** for graphing weekly forecast data
-- **LLM Client** for generating user-friendly weather descriptions
 
 ## License 📝
 This project is licensed under the MIT License.
 
 ## Acknowledgements 🙌
 - **OpenWeatherMap API** for providing weather data
-- **Streamlit** for making it easy to build and deploy web applications
+- **ApexCharts** for charting
 
 Feel free to contribute and open issues if you have suggestions or find any bugs. Enjoy forecasting! 🌤️
