@@ -9,14 +9,25 @@
 </head>
 <body>
   <div class="container">
-    <form method="get" class="header">
-      <div class="city-date">
-        <span class="city">{{ city }}</span>
-        <span class="date">{{ weather.date }}</span>
-      </div>
-      <input type="text" name="city" placeholder="Search city..." value="{{ city }}" style="border-radius: 16px; padding: 8px 16px; border: 1px solid #eee; font-size: 1rem;">
-      <button type="submit" style="border-radius: 16px; padding: 8px 16px; background: #b7eaff; border: none; font-weight: 600; cursor: pointer;">Search</button>
-    </form>
+<form method="get" class="header" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+  <div class="city-date" style="text-align: center;">
+    <span class="city">{{ city }}</span><br>
+    <span class="date">{{ weather.date }}</span>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 10px; width: 50%;">
+    <input type="text" 
+           name="city" 
+           placeholder="Search city..." 
+           value="{{ city }}" 
+           style="flex: 1; border-radius: 16px; padding: 8px 16px; border: 1px solid #eee; font-size: 1rem;">
+
+    <button type="submit" 
+            style="border-radius: 16px; padding: 8px 16px; background: #b7eaff; border: none; font-weight: 600; cursor: pointer;">
+      Search
+    </button>
+  </div>
+</form>
     {% if error %}
       <div style="background:#ffe0e0;color:#b00;padding:18px 16px;border-radius:16px;margin-bottom:24px;text-align:center;font-size:1.1em;">
         {{ error }}
