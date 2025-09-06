@@ -12,10 +12,8 @@ app = Flask(__name__)
 API_KEY = os.getenv('WEATHER_API_KEY')
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
-# Initialize Groq client
 client = Groq(api_key=GROQ_API_KEY)
 
-# Helper to map weather to icon filename
 ICON_MAP = {
     'Rain': 'rain.png',
     'Clear': 'sun.png',
@@ -40,7 +38,6 @@ def get_icon(weather_main):
 def generate_weather_description(weather_data, city):
     """Generate an AI-powered weather description using Groq"""
     try:
-        # Create a prompt with weather information
         prompt = f"""
         Current weather in {city}:
         - Temperature: {weather_data.get('temp', 'N/A')}°C
@@ -49,7 +46,7 @@ def generate_weather_description(weather_data, city):
         - Wind Speed: {weather_data.get('wind', 'N/A')} m/s
         - Pressure: {weather_data.get('pressure', 'N/A')} hPa
         
-        Please provide a brief, friendly weather description (2-3 sentences) that includes practical advice or observations about the current conditions. Be conversational and helpful.
+        Please provide a brief, friendly weather description (1-2 sentences) that includes practical advice or observations about the current conditions. Be conversational and helpful.
         """
         
         chat_completion = client.chat.completions.create(
@@ -75,20 +72,17 @@ def generate_weather_description(weather_data, city):
         # Fallback to basic description if AI fails
         return f"Current conditions in {city}: {weather_data.get('desc', 'Weather information unavailable')}."
 
-# Landing page
 @app.route('/', methods=['GET'])
 def landing():
     return render_template('landing.html')
 
-# Weather dashboard
 @app.route('/app', methods=['GET'], endpoint='index')
 def index():
-    city = request.args.get('city', 'London')
+    city = request.args.get('city', 'New Delhi')
     weather, forecast, trend, error = get_weather_data(city)
     return render_template('index.html', city=city, weather=weather, forecast=forecast, trend=trend, error=error)
 
 def get_weather_data(city):
-    # OpenWeatherMap API endpoints
     url_weather = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
     url_forecast = f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric'
     
@@ -103,7 +97,6 @@ def get_weather_data(city):
         
         if r.status_code != 200 or 'main' not in data or 'weather' not in data:
             error = data.get('message', 'Could not fetch weather data.')
-            # Provide dummy values to avoid template errors
             weather = {
                 'temp': '-', 
                 'desc': '-', 
@@ -118,8 +111,7 @@ def get_weather_data(city):
             }
             forecast = []
             trend = {'labels': [], 'highs': [], 'lows': []}
-            return weather, forecast, trend, error
-            
+            return weather, forecast, trend, error       
         weather = {
             'temp': round(data['main']['temp'], 1),
             'desc': data['weather'][0]['description'].title(),
@@ -131,8 +123,6 @@ def get_weather_data(city):
             'uv': 5,  # Placeholder, OpenWeatherMap OneCall API needed for real UV
             'date': datetime.utcfromtimestamp(data['dt']).strftime('%A, %B %d'),
         }
-        
-        # Generate AI description
         weather['ai_description'] = generate_weather_description(weather, city)
         
         r2 = requests.get(url_forecast)
@@ -143,8 +133,7 @@ def get_weather_data(city):
             forecast = []
             trend = {'labels': [], 'highs': [], 'lows': []}
             return weather, forecast, trend, error
-            
-        # 5-day forecast, one per day (at 12:00)
+
         days = {}
         for entry in data2['list']:
             dt = datetime.utcfromtimestamp(entry['dt'])
@@ -158,8 +147,7 @@ def get_weather_data(city):
                     'icon': get_icon(entry['weather'][0]['main'])
                 }
         forecast = list(days.values())
-        
-        # For chart: get high/low for each day
+
         highs, lows, labels = [], [], []
         for day, entries in group_by_day(data2['list']).items():
             temps = [e['main']['temp'] for e in entries]
