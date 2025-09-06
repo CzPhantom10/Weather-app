@@ -3,12 +3,17 @@ from flask import Flask, render_template, request
 from dotenv import load_dotenv
 import requests
 from datetime import datetime
+from groq import Groq
 
 load_dotenv()
 
 app = Flask(__name__)
 
 API_KEY = os.getenv('WEATHER_API_KEY')
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+
+# Initialize Groq client
+client = Groq(api_key=GROQ_API_KEY)
 
 # Helper to map weather to icon filename
 ICON_MAP = {
@@ -32,6 +37,43 @@ ICON_MAP = {
 def get_icon(weather_main):
     return ICON_MAP.get(weather_main, 'cloudy.png')
 
+def generate_weather_description(weather_data, city):
+    """Generate an AI-powered weather description using Groq"""
+    try:
+        # Create a prompt with weather information
+        prompt = f"""
+        Current weather in {city}:
+        - Temperature: {weather_data.get('temp', 'N/A')}°C
+        - Condition: {weather_data.get('desc', 'N/A')}
+        - Humidity: {weather_data.get('humidity', 'N/A')}%
+        - Wind Speed: {weather_data.get('wind', 'N/A')} m/s
+        - Pressure: {weather_data.get('pressure', 'N/A')} hPa
+        
+        Please provide a brief, friendly weather description (2-3 sentences) that includes practical advice or observations about the current conditions. Be conversational and helpful.
+        """
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a friendly weather assistant that provides concise, helpful weather descriptions with practical advice. Keep responses brief (2-3 sentences) and conversational."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            model="llama-3.3-70b-versatile",
+            max_tokens=150,
+            temperature=0.7
+        )
+        
+        return chat_completion.choices[0].message.content.strip()
+        
+    except Exception as e:
+        print(f'Groq API error: {e}')
+        # Fallback to basic description if AI fails
+        return f"Current conditions in {city}: {weather_data.get('desc', 'Weather information unavailable')}."
 
 # Landing page
 @app.route('/', methods=['GET'])
@@ -54,16 +96,30 @@ def get_weather_data(city):
     forecast = []
     trend = {'labels': [], 'highs': [], 'lows': []}
     error = None
+    
     try:
         r = requests.get(url_weather)
         data = r.json()
+        
         if r.status_code != 200 or 'main' not in data or 'weather' not in data:
             error = data.get('message', 'Could not fetch weather data.')
             # Provide dummy values to avoid template errors
-            weather = {'temp': '-', 'desc': '-', 'main': '-', 'icon': 'cloudy.png', 'humidity': '-', 'pressure': '-', 'wind': '-', 'uv': '-', 'date': '-'}
+            weather = {
+                'temp': '-', 
+                'desc': '-', 
+                'main': '-', 
+                'icon': 'cloudy.png', 
+                'humidity': '-', 
+                'pressure': '-', 
+                'wind': '-', 
+                'uv': '-', 
+                'date': '-',
+                'ai_description': 'Weather information currently unavailable.'
+            }
             forecast = []
             trend = {'labels': [], 'highs': [], 'lows': []}
             return weather, forecast, trend, error
+            
         weather = {
             'temp': round(data['main']['temp'], 1),
             'desc': data['weather'][0]['description'].title(),
@@ -75,13 +131,19 @@ def get_weather_data(city):
             'uv': 5,  # Placeholder, OpenWeatherMap OneCall API needed for real UV
             'date': datetime.utcfromtimestamp(data['dt']).strftime('%A, %B %d'),
         }
+        
+        # Generate AI description
+        weather['ai_description'] = generate_weather_description(weather, city)
+        
         r2 = requests.get(url_forecast)
         data2 = r2.json()
+        
         if r2.status_code != 200 or 'list' not in data2:
             error = data2.get('message', 'Could not fetch forecast data.')
             forecast = []
             trend = {'labels': [], 'highs': [], 'lows': []}
             return weather, forecast, trend, error
+            
         # 5-day forecast, one per day (at 12:00)
         days = {}
         for entry in data2['list']:
@@ -96,6 +158,7 @@ def get_weather_data(city):
                     'icon': get_icon(entry['weather'][0]['main'])
                 }
         forecast = list(days.values())
+        
         # For chart: get high/low for each day
         highs, lows, labels = [], [], []
         for day, entries in group_by_day(data2['list']).items():
@@ -104,12 +167,25 @@ def get_weather_data(city):
             lows.append(round(min(temps)))
             labels.append(datetime.utcfromtimestamp(entries[0]['dt']).strftime('%b %d'))
         trend = {'labels': labels, 'highs': highs, 'lows': lows}
+        
     except Exception as e:
         print('Weather API error:', e)
         error = str(e)
-        weather = {'temp': '-', 'desc': '-', 'main': '-', 'icon': 'cloudy.png', 'humidity': '-', 'pressure': '-', 'wind': '-', 'uv': '-', 'date': '-'}
+        weather = {
+            'temp': '-', 
+            'desc': '-', 
+            'main': '-', 
+            'icon': 'cloudy.png', 
+            'humidity': '-', 
+            'pressure': '-', 
+            'wind': '-', 
+            'uv': '-', 
+            'date': '-',
+            'ai_description': 'Weather information currently unavailable.'
+        }
         forecast = []
         trend = {'labels': [], 'highs': [], 'lows': []}
+        
     return weather, forecast, trend, error
 
 def group_by_day(entries):
